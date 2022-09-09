@@ -19,40 +19,63 @@ Sources:        Resources on Canvas
 
 -- Exercise 1
 maxi :: Integer -> Integer -> Integer
-maxi = undefined
+maxi m n = if m >= n then m else n
 
--- maxi 2 3 == 3
--- maxi 3 2 == 2
+--maxi 3 2 == 3
+--maxi 2 3 == 3
 
 -- Exercise 2
 fourAscending :: Integer -> Integer -> Integer -> Integer -> Bool
-fourAscending = undefined
+fourAscending a b c d = a < b && b < c && c < d
+
+-- fourAscending 1 2 3 4 == True
+-- fourAscending 1 2 4 3 == False
+-- fourAscending 1 1 1 1 == False
 
 -- Exercise 3
 fourEqual :: Integer -> Integer -> Integer -> Integer -> Bool
-fourEqual = undefined
+fourEqual a b c d = a == b && b == c && c == d
+
+-- fourEqual 1 1 1 1 == True
+-- fourEqual 0 1 2 3 == False
 
 -- Exercise 4
 fourDifferent :: Integer -> Integer -> Integer -> Integer -> Bool
-fourDifferent = undefined
+fourDifferent a b c d = a /= b && a /= c && a /= d && b /= c && b /= d && c /= d
+
+-- fourDifferent 1 2 3 4 == True
+-- fourDifferent 1 2 3 1 == False
 
 -- Exercise 5
 {-
-   <Paste your answer here>
+   threeDifferent 1 2 1
+   -- The function does not check to see that a and c are not equal, only that a/b and b/c are not equal
 -}
 
 -- Exercise 6
 factorial :: Integer -> Integer
-factorial = undefined
+factorial 0 = 1
+factorial n = n * factorial (n-1)
+
+-- factorial 5 == 120
+-- factorial 10 == 3628800
 
 -- Exercise 7
 fib :: Integer -> Integer
-fib = undefined
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+
+-- fib 2 == 1
+-- fib 6 == 8
 
 -- Exercise 8
 -- it is possible to define auxiliary functions
 strangeSummation :: Integer -> Integer
-strangeSummation = undefined
+strangeSummation n = (8 * n) + 28
+
+-- strangeSummation 50 == 428
+-- strangeSummation 5 = 68
 
 -- Exercise 9
 lengthList :: [Integer] -> Integer
@@ -66,11 +89,21 @@ lengthListAlternative l =
     (h:t) -> 1 + (lengthListAlternative t)
 
 sumList :: [Integer] -> Integer
-sumList = undefined
+sumList [] = 0
+sumList (h:t) = h + sumList t
+
+-- sumList [1,2,3] == 6
+-- sumList [] == 0
+-- sumList [1,1,1,1,] == 4
 
 -- Exercise 10
 doubleList :: [Integer] -> [Integer]
-doubleList = undefined
+doubleList [] = []
+doubleList (h:t) = 2*h : doubleList t
+
+-- doubleList [1,2,3] == [2,4,6]
+-- doubleList [] = []
+-- doubleList [-1, 0, 23] == [-2, 0, 46]
 
 -- Exercise 11
 myappend :: [a] -> [a] -> [a]
