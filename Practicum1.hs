@@ -10,6 +10,7 @@ Discussed with: <In case you discussed the exercises with someone else,
 Remarks:        <In case something need special attention,
                  please tell us>
 Sources:        Resources on Canvas
+                https://wiki.haskell.org/How_to_work_on_lists#Finding_.2F_searching
 -}
 
 -- Below you will find templates for the exercises. For each exercise,
@@ -107,44 +108,85 @@ doubleList (h:t) = 2*h : doubleList t
 
 -- Exercise 11
 myappend :: [a] -> [a] -> [a]
-myappend = undefined
+myappend [] [] = []
+myappend (h:t) [] = h:t
+myappend [] (h:t) = h:t
+myappend (h:t) (i:u) = h : myappend t (i:u)
+
+-- myappend [1,2,3] [4,5,6] = [1,2,3,4,5,6]
+-- myappend [] [1,2,3] = [1,2,3]
+-- myappend [1,2,3] [] = [1,2,3]
 
 -- Exercise 12
+-- NOTE: use myappend 
 myreverse :: [a] -> [a]
-myreverse = undefined
+myreverse [] = []
+myreverse (h:t) = myappend (myreverse t) [h]
+
+-- myreverse [1,2,3] == [3,2,1]
+-- myreverse [] == []
+-- myreverse [0] == [0]
 
 -- Exercise 13
 mymember :: (Eq a) => a -> [a] -> Bool
-mymember = undefined
+mymember a [] = False
+mymember a (h:t) = (a == h) || mymember a t
+
+-- mymember 1 [] == False
+-- mymember 1 [2,3,4] == False
+-- mymember 1 [3,2,1] == True
 
 -- Exercise 14
 mysquaresum :: [Integer] -> Integer
-mysquaresum = undefined
+mysquaresum [] = 0
+mysquaresum (h:t) = (h * h) + mysquaresum t
+
+-- mysquaresum [5,4,3] == 50
+-- mysquaresum [1] == 1
+-- mysquaresum [] == 0
 
 -- Exercise 15
 range :: Integer -> Integer -> [Integer]
-range = undefined
+range a b = if a > b then [] else (if a == b then [b] else a : range (a+1) b)
+
+-- range 1 5 == [1,2,3,4,5]
+-- range 1 1 == [1]
+-- range 3 1 == []
 
 -- Exercise 16
 myconcat :: [[a]] -> [a]
-myconcat = undefined
+myconcat [] = []
+myconcat (h:t) = h ++ myconcat t
+
+-- myconcat [[1,2,3],[4,5,6]] == [1,2,3,4,5,6]
+-- myconcat [] == []
 
 -- Exercise 17
 insert :: Ord a => a -> [a] -> [a]
-insert = undefined
+insert x [] = [x]
+insert x (h:t) = if x > h then h : insert x t else x : h : t
+
+-- insert 3 [1,2,4] == [1,2,3,4]
+-- insert 3 [4] == [3,4]
+-- insert 5 [] = [5]
 
 insertionsort :: Ord a => [a] -> [a]
-insertionsort = undefined
+insertionsort [] = []
+insertionsort (h:t) = insert h (insertionsort t) 
+
+-- insertionsort [4,3,1,5] == [1,3,4,5]
+-- insertionsort [1,4,-5] == [-5,1,4]
+-- insertionsort [5] == [5]
 
 -- Exercise 18
 minim :: Ord a => [a] -> a
-minim = undefined
+minim x = head (insertionsort x)
 
 removeFirstOccurrence :: Eq t => t -> [t] -> [t]
-removeFirstOccurrence = undefined
+removeFirstOccurrence x (h:t) = if x == h then t else h : removeFirstOccurrence x t
 
 selectionsort :: Ord a => [a] -> [a]
-selectionsort = undefined
+selectionsort a = selectionsort (removeFirstOccurrence x a) where x = minim a
 
 -- Exercise 19
 quicksort :: Ord a => [a] -> [a]
