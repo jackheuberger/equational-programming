@@ -180,13 +180,28 @@ insertionsort (h:t) = insert h (insertionsort t)
 
 -- Exercise 18
 minim :: Ord a => [a] -> a
+minim [] = undefined
 minim x = head (insertionsort x)
 
+-- minim [5,3,1] == 1
+-- minim [] == undefined
+-- minim [1] == 1
+
 removeFirstOccurrence :: Eq t => t -> [t] -> [t]
+removeFirstOccurrence x [] = []
 removeFirstOccurrence x (h:t) = if x == h then t else h : removeFirstOccurrence x t
 
+-- removeFirstOccurrence 4 [5,4,4,1] == [5,4,1]
+-- removeFirstOccurrence 4 [5,4,3,4,1] == [5,3,4,1]
+-- removeFirstOccurrence 1 [1] == []
+
 selectionsort :: Ord a => [a] -> [a]
-selectionsort a = selectionsort (removeFirstOccurrence x a) where x = minim a
+selectionsort [] = []
+selectionsort a = x : selectionsort (removeFirstOccurrence x a) where x = minim a
+
+-- selectionsort [3,2,1] == [1,2,3]
+-- selectionsort [0] == [0]
+-- selectionsort [5, -5] == [-5, 5]
 
 -- Exercise 19
 quicksort :: Ord a => [a] -> [a]
