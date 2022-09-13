@@ -204,20 +204,44 @@ selectionsort a = x : selectionsort (removeFirstOccurrence x a) where x = minim 
 -- selectionsort [5, -5] == [-5, 5]
 
 -- Exercise 19
+gt :: Ord a => a -> [a] -> [a]
+gt x [] = []
+gt x arry = filter (>x) arry
+
+lteq :: Ord a => a -> [a] -> [a]
+lteq x [] = []
+lteq x arry = filter (<=x) arry
+
 quicksort :: Ord a => [a] -> [a]
-quicksort = undefined
+quicksort [] = []
+quicksort (h:t) = quicksort (lteq h t) ++ [h] ++ quicksort (gt h t)
+
+-- quicksort [3,2,1] == [1,2,3]
+-- quicksort [0] == [0]
+-- quicksort [-3, -4, -5, -3] == [-5, -4, -3, -3]
 
 -- Exercise 20
 evensB :: [Integer] -> [Integer]
-evensB = undefined
+evensB arry = [x | x <- arry, even x]
+
+-- evensB [1,2,3] == [2]
+-- evensB [3,1,5] == []
+-- evensB [] == []
 
 -- Exercise 22
 mymap :: (a -> b) -> [a] -> [b]
-mymap = undefined
+mymap func [] = []
+mymap func (h:t) = func h : mymap func t
+
+-- mymap (\x -> x + 1) [1,2,3] == [2,3,4]
+-- mymap (even) [1,2,3,4] == [False, True, False, True]
+-- mymap (\x -> x + 1) [] == []
 
 -- Exercise 23
 twice :: (a -> a) -> a -> a
-twice = undefined
+twice func a = func (func a)
+
+-- twice (\x -> x + 1) 1 == 3
 
 -- Exercise 24
 compose :: (b -> c) -> (a -> b) -> a -> c
