@@ -208,9 +208,16 @@ gt :: Ord a => a -> [a] -> [a]
 gt x [] = []
 gt x arry = filter (>x) arry
 
+-- gt 3 [1,2,3] == []
+-- gt 5 [4,5,6] == [6]
+-- gt 1 [2,3,4] == [2,3,4]
+
 lteq :: Ord a => a -> [a] -> [a]
 lteq x [] = []
 lteq x arry = filter (<=x) arry
+
+-- lteq 5 [3,4,5] == [3,4,5]
+-- lteq 6 [8,7,9] == []
 
 quicksort :: Ord a => [a] -> [a]
 quicksort [] = []
@@ -242,14 +249,22 @@ twice :: (a -> a) -> a -> a
 twice func a = func (func a)
 
 -- twice (\x -> x + 1) 1 == 3
+-- twice (\x -> x^2) 5 == 625
 
 -- Exercise 24
 compose :: (b -> c) -> (a -> b) -> a -> c
-compose = undefined
+compose a b x = a (b (x))
+
+-- compose (\x -> x+1) (\x -> x^2) 3 == 10
+-- compose (\x -> x^2) (\x -> x+1) 3 == 16
 
 -- Exercise 25
 mylast :: [a] -> a
-mylast = undefined
+mylast a = head (reverse a)
+
+-- mylast [] -> Exception: Prelude.head: empty list
+-- mylast [2,3,1] == [1]
+-- mylast [[1,2,5],[58],[2,1,5,8,0]] == [2,1,5,8,0]
 
 -- Exercise 26
 mylastb :: [a] -> a
