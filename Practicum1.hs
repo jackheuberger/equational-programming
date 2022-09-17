@@ -268,30 +268,73 @@ mylast a = head (reverse a)
 
 -- Exercise 26
 mylastb :: [a] -> a
-mylastb = undefined
+mylastb a = head (drop (length a - 1) a)
+
+-- mylastb [] -> Exception: Prelude.head: empty list
+-- mylastb [2,3,1] == [1]
+-- mylastb [[1,2,5],[58],[2,1,5,8,0]] == [2,1,5,8,0]
 
 -- Exercise 27
 myinit, myinitb :: [a] -> [a]
-myinit = undefined
-myinitb = undefined
+myinit a = take (length a -1) a
+myinitb a = reverse (tail (reverse a))
+
+-- Tests hold for both functions
+-- myinit [1,2,3] == [1,2]
+-- myinit [1] == []
 
 -- Exercise 28
 mysecondconcat :: [[a]] -> [a]
-mysecondconcat = undefined
+mysecondconcat a = foldr (++) [] a
 
+-- mysecondconcat [[]] == []
+-- mysecondconcat [[1,2,3],[4,5,6]] == [1,2,3,4,5,6]
+
+-- Given an element and an array, append the element to the end of the array
+toend :: a -> [a] -> [a]
+toend a b = b ++ [a]
+
+-- toend 3 [1,2] == [1,2,3]
+-- toend 1 [] == [1]
+
+-- Reversing = sending each element to the end of the array from right to left
 mysecondreverse :: [a] -> [a]
-mysecondreverse = undefined
+mysecondreverse a = foldr toend [] a
+
+-- mysecondreverse [] == []
+-- mysecondreverse [3,2,1] == [1,2,3]
 
 -- Exercise 28
 mythirdconcat :: [[a]] -> [a]
-mythirdconcat = undefined
+mythirdconcat a = foldl (++) [] a
 
+-- mysecondconcat [[]] == []
+-- mysecondconcat [[1,2,3],[4,5,6]] == [1,2,3,4,5,6]
+
+tofront :: [a] -> a -> [a]
+tofront a b = b : a
+
+-- tofront [2,3] 1 == [1,2,3]
+-- tofront [] 1 == [1]
+
+-- Reversing = sending each element to the front of the array from left to right
 mythirdreverse :: [a] -> [a]
-mythirdreverse = undefined
+mythirdreverse a = foldl tofront [] a
 
+-- mythirdreverse [] == []
+-- mmythirdreverse [3,2,1] == [1,2,3]
 
 -- Exercise 29
 
 prefix :: [a] -> [[a]]
-prefix = undefined
+prefix [] = []
+prefix (h:t) = undefined
 
+prevhelper :: [a] -> a -> [a]
+prevhelper [] x = [x]
+prevhelper x = (++) x
+
+-- Iterate through list
+-- When you reach an element, append to prev prefix
+
+-- prefix [1,2,3] == [[],[1],[1,2],[1,2,3]]
