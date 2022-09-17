@@ -327,14 +327,12 @@ mythirdreverse a = foldl tofront [] a
 -- Exercise 29
 
 prefix :: [a] -> [[a]]
-prefix [] = []
-prefix (h:t) = undefined
+prefix [] = [[]]
+prefix (h:t) = [] : map (h:) (prefix t)
 
-prevhelper :: [a] -> a -> [a]
-prevhelper [] x = [x]
-prevhelper x = (++) x
-
--- Iterate through list
--- When you reach an element, append to prev prefix
+-- [] : prefix t -- leaves out first element from all permutations
+-- Need to append the first element back to everything -- using map
 
 -- prefix [1,2,3] == [[],[1],[1,2],[1,2,3]]
+-- prefix [] == [[]]
+-- prefix "jack" == ["","j","ja","jac","jack"]
