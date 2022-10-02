@@ -123,59 +123,89 @@ data BinaryTree a = Leaf | Node (BinaryTree a) a (BinaryTree a)
 -- Exercise 1
 numberofnodes :: BinaryTree a -> Integer
 numberofnodes Leaf = 0
-numberofnodes = undefined
+numberofnodes (Node l _ r) = 1 + numberofnodes l + numberofnodes r
 
 -- Exercise 2
 height :: BinaryTree a -> Integer
-height = undefined
+height Leaf = 1
+height (Node l _ r) = 1 + max (height l) (height r)
 
 -- Exercise 3
 sumnodes :: (Num a) => BinaryTree a -> a
-sumnodes = undefined
+sumnodes Leaf = 0
+sumnodes (Node l a r) = a + sumnodes l + sumnodes r
 
 -- Exercise 4
 mirror :: BinaryTree a -> BinaryTree a
-mirror = undefined
+mirror Leaf = Leaf
+mirror (Node l a r) = Node r a l
 
 -- Exercise 5
 flatten :: BinaryTree a -> [a]
-flatten = undefined
+flatten Leaf = []
+flatten (Node l a r) = flatten l ++ [a] ++ flatten r
 
 -- Exercise 6
 treemap :: (a -> b) -> BinaryTree a -> BinaryTree b
-treemap = undefined
+treemap f Leaf = Leaf
+treemap f (Node l a r) = Node (treemap f l) (f a) (treemap f r)
 
 -- -------------------------
 -- Exercises Binary Search Trees
 -- -------------------------
 
 -- Exercise 1
+-- true if x is the largest element
 smallerthan :: (Ord a) => a -> BinaryTree a -> Bool
-smallerthan = undefined
+smallerthan x Leaf = True
+smallerthan x (Node l a r) = a < x && smallerthan x r
 
+-- true if x is the smallest element
 largerthan :: (Ord a) => a -> BinaryTree a -> Bool
-largerthan = undefined
+largerthan x Leaf = True
+largerthan x (Node l a r) = a > x && largerthan x l
 
 -- Exercise 2
+-- recursive calls, then make sure all elements in left subtree are smaller than current, and all elements in right subtree are greater than current
 isbinarysearchtree :: (Ord a) => BinaryTree a -> Bool
-isbinarysearchtree = undefined
+isbinarysearchtree Leaf = True
+isbinarysearchtree (Node l a r) = isbinarysearchtree l && isbinarysearchtree r && smallerthan a l && largerthan a r
 
 -- Exercise 3
 iselement :: (Ord a, Eq a) => a -> BinaryTree a -> Bool
-iselement = undefined
+iselement x Leaf = False
+iselement x (Node l a r) = x == a || iselement x l || iselement x r
 
 -- Exercise 4
 insert :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
-insert = undefined
+insert x Leaf = Node Leaf x Leaf
+insert x (Node l a r) 
+  | x == a = Node l a r
+  | x > a = Node l a (insert x r)
+  | x < a = Node (insert x l) a r
 
 -- Exercise 5
 createbinarysearchtree :: (Ord a, Eq a) => [a] -> BinaryTree a
-createbinarysearchtree = undefined
+createbinarysearchtree [] = Leaf
+createbinarysearchtree (h:t) = Node (createbinarysearchtree (filter (< h) t)) h (createbinarysearchtree (filter (> h) t))
 
 -- Exercise 6
 remove :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
-remove = undefined
+remove _ Leaf = Leaf
+-- recursive calls until x == a
+remove x (Node l a r)
+  | x < a = Node (remove x l) a r
+  | x > a = Node l a (remove x r)
+-- handle cases with no or 1 child
+remove _ (Node Leaf _ Leaf) = Leaf
+remove _ (Node l _ Leaf) = l 
+remove _ (Node Leaf _ r) = r
+-- delete root node
+remove x (Node l a r) = delete x (Node l a r)
 
+delete :: (Ord a, Eq a) => a -> BinaryTree a -> BinaryTree a
+-- find minimum child in right subtree, bring that value to current node & delete that node
+delete _ (Node l _ r) = let minr = minimum (flatten r); rnew = remove minr r in Node l minr rnew
 
 ----------------------------
 -- Exercise Tower of Hanoi
@@ -185,6 +215,7 @@ remove = undefined
 -- and in that case adapt the type of the function hanoi accordingly
 type Rod = String
 type Move = (Integer, Rod, Rod)
+-- num disks -> three rods
 hanoi :: Integer -> Rod -> Rod -> Rod -> [Move]
 hanoi = undefined
 
