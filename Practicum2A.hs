@@ -214,8 +214,9 @@ delete _ (Node l _ r) = let minr = minimum (flatten r); rnew = remove minr r in 
 -- comment out the following two lines in case you take a different approach
 -- and in that case adapt the type of the function hanoi accordingly
 type Rod = String
+-- number of disks, from rod, to rod
 type Move = (Integer, Rod, Rod)
 -- num disks -> three rods
 hanoi :: Integer -> Rod -> Rod -> Rod -> [Move]
-hanoi = undefined
-
+hanoi 1 src aux dest = [(1, src, dest)]
+hanoi num src aux dest = hanoi (num-1) src dest aux ++ hanoi 1 src aux dest ++ hanoi (num-1) aux src dest
