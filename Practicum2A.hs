@@ -5,12 +5,10 @@ module Practicum2A where
 Name:           Jack Heuberger
 VU-net id:      jhe309
 Student number: 2779029
-Discussed with: <In case you discussed the exercises with someone else,
-                 please mention his/her name(s) explicitly here>
+Discussed with: N/A
 Remarks:        <In case something need special attention,
                  please tell us>
-Sources:        <in case you used sources such as books or webpages
-                 please mention them here>
+Sources:        Wikipedia algorithm for Towers of Hanoi
 -}
 
 -- -------------------------

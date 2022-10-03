@@ -1,9 +1,9 @@
 module Practicum2B where
 
 {-
-Name:           <Name and family name>
-VU-net id:      <VU-net id>
-Student number: <Student number>
+Name:           Jack Heuberger
+VU-net id:      jhe309
+Student number: 2779029
 Discussed with: <In case you discussed the exercises with someone else,
                  please mention his/her name(s) explicitly here>
 Remarks:        <In case something need special attention,
@@ -41,12 +41,21 @@ myDividedBy n d =
   else Result (n / d)
 
 -- Exercise 1-a
+-- Takes list and element, returns first index of that element
 myIndexOf :: [Double] -> Double -> MaybeOne Int
-myIndexOf l n = undefined
+myIndexOf l n = if ind > (length l) -1 then NoResult else Result (ind)
+  where 
+  ind = indexHelper l 0
+  indexHelper [] i = i
+  indexHelper (h:t) i = if h == n then i else indexHelper t (i+1) 
 
 -- Exercise 1-b
 myRemainderString :: String -> String -> MaybeOne String
-myRemainderString x y = undefined
+myRemainderString x y = if remainderHelper x y then Result (drop l y) else NoResult 
+  where 
+  l = length x
+  remainderHelper [] y = True
+  remainderHelper (xh:xt) (yh:yt) = if xh == yh then remainderHelper xt yt else False
 
 -- Create an operator for our divide function
 n // d = n `myDividedBy` d
@@ -88,7 +97,22 @@ g x y z s =
 
 -- Exercise 2
 v1 :: Double -> Double -> Double -> Double -> MaybeOne Double
-v1 x y z s = undefined
+v1 x y z s = 
+  case x // y of
+    NoResult    -> NoResult
+    Result xDBy -> 
+      case y // s of
+        NoResult    -> NoResult
+        Result yDBs ->
+          case z // s of 
+            NoResult    -> NoResult
+            Result zDBs ->
+              case z // x of
+                NoResult    -> NoResult
+                Result zDBx -> 
+                  case xDBy // (zDBs - yDBs) of
+                    NoResult -> NoResult
+                    Result a -> Result (a - (yDBs + zDBx))
 
 -- Example f using >==
 fBetter :: Double -> Double -> Double -> MaybeOne Double
