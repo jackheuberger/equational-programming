@@ -144,7 +144,16 @@ gBetter x y z s =
 
 -- Exercise 3
 v2 :: Double -> Double -> Double -> Double -> MaybeOne Double
-v2 x y z s = undefined
+v2 x y z s = (x // y) >>= (\xDBy ->
+    (z // s) >>= (\zDBs ->
+      (y // s) >>= (\yDBs ->
+        (z // x) >>= (\zDBx ->
+          let denom = zDBs - yDBs
+           in (xDBy - (denom * (yDBs + zDBx))) // denom
+        )
+      )
+    )
+  )
 
 -- Example f using do
 fDo :: Double -> Double -> Double -> MaybeOne Double
@@ -184,5 +193,11 @@ gPerfect x y z s = do
 
 -- Exercise 4
 v3 :: Double -> Double -> Double -> Double -> MaybeOne Double
-v3 x y z s = undefined
-
+v3 x y z s = do
+  xDBy <- x // y
+  zDBs <- z // s
+  yDBs <- y // s
+  zDBx <- z // x
+  let denom = zDBs - yDBs
+  let right = yDBs + zDBx
+  (xDBy - (denom * right)) // denom

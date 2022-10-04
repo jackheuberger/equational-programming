@@ -57,7 +57,7 @@ eratosthenes = primehelper natsaftertwo
 -- Exercise 9
 fibonacci :: [Integer]
 -- add each element in fibonacci to the last element of fibonacci, which happens infinitely
-fibonacci = 0 : 1 : zipWith (+) fibonacci (tail fibonacci)
+fibonacci = 1 : 1 : zipWith (+) fibonacci (tail fibonacci)
 
 -- -----------------------
 -- Exercise Church Numerals
