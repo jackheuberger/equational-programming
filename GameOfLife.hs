@@ -44,19 +44,21 @@ defaultOptions  = Options
 
 -- | Algorithm implementation
 nextGeneration :: World -> World
-nextGeneration w = S.union (calcAlive w) (newCells w)
+nextGeneration w = S.union (calcAlive w) (calcRes w)
 
 -- Notes:
--- A world is a set of cells, each cell has an x and y pos
+-- A world is a set of ALIVE cells, each cell has an x and y pos
 -- All we need to do is calculate the set of cells that are still alive
   -- The alive set consists of the set of live cells that will still live, and resurrections
-calcAlive w = S.filter(\x -> (threeNeighbors x w) || neighborCountIn x w == 2) w
-newCells w = S.filter (\x -> threeNeighbors x w) (filterTarget w)
+  -- resurrections are dead cells with 3 neighbors
+  -- To calc resurrections, get the list of all neighboring cells to any alive cells, and then remove all alive cells. Then, count the number of neighbors per cell
+calcAlive w = S.filter(\x -> (neighborCountIn x w == 3) || neighborCountIn x w == 2) w
 
-threeNeighbors cell world = neighborCountIn cell world == 3
+calcRes w = S.filter(\x -> neighborCountIn x w == 3) (neighborSet w S.\\ w)
 
--- 
-filterTarget w = (S.foldr (\x-> \y-> S.union (neighbors x) y) S.empty w) S.\\ w
+-- Calculates the set of neighbors of all alive cells
+  -- For each cell in w, get it's neighbors & union with the current total set
+neighborSet w = S.foldr (\cell -> S.union (neighbors cell)) S.empty w
 
 -- | Helper functions
 -- deadCells :: World -> World
