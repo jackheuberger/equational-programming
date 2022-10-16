@@ -48,33 +48,47 @@ isredex (App (App (App S x) y) z) = True
 isredex _ = False
 
 hasredex :: Term -> Bool
-hasredex = undefined
+hasredex (App x y) = isredex (App x y) || hasredex x || hasredex y
+hasredex x = isredex x
 
 isnormalform :: Term -> Bool
-isnormalform = undefined
+isnormalform x = not (hasredex x)
 
 headstep :: Term -> Term
-headstep = undefined
+headstep (App I x) = x
+headstep (App (App K x) y) = x
+headstep (App (App (App S x) y) z) = App (App x y) (App x z)
+headstep x = x
 
+-- If the outer term is a redex, simplify. Else, recurse on children
 doall :: Term -> Term
-doall = undefined
+doall (App x y) = if isredex (App x y) 
+                    then doall (headstep (App x y)) 
+                  else if hasredex (App x y) 
+                    then doall (App (doall x) (doall y))
+                  else (App x y)
+doall x = x
 
 
 
 -- Exercises Equational Specifications
-data Thing = Undefined1
+data Thing = U | V | W
   deriving (Show, Eq, Bounded, Enum)
 
 nxt :: Thing -> Thing
-nxt = undefined
+nxt U = V
+nxt V = W
+nxt W = U
 
 -- 
-data I = Undefined2
+data I = T | F
   deriving (Show, Eq, Bounded, Enum)
 
 s :: I -> I
-s = undefined
+s T = F
+s F = T
 
 p :: I -> I
-p = undefined
+p T = F
+p F = T
 
